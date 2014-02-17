@@ -2,13 +2,13 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>
-            http://jyidiego.github.io/blog/2014/02/17/exploring-jclouds-with-groovy-from-a-python-developers-point-of-view/
+            http://jyidiego.github.io/blog/2014/02/17/exploring-jclouds-a-python-developers-point-of-view/
         </loc>
-        <lastmod>2014-02-17T17:04:29+00:00</lastmod>
+        <lastmod>2014-02-17T17:18:58+00:00</lastmod>
     </url>
     <url>
         <loc>http://jyidiego.github.io/</loc>
-        <lastmod>2014-02-17T17:04:29+00:00</lastmod>
+        <lastmod>2014-02-17T17:18:58+00:00</lastmod>
     </url>
     <url>
         <loc>http://jyidiego.github.io/robots.txt</loc>
@@ -16,6 +16,6 @@
     </url>
     <url>
         <loc>http://jyidiego.github.io/blog/archives/</loc>
-        <lastmod>2014-02-17T17:04:29+00:00</lastmod>
+        <lastmod>2014-02-17T17:18:58+00:00</lastmod>
     </url>
 </urlset>
