@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-17T21:19:34+00:00</updated>
+  <updated>2014-02-17T21:26:07+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -24,12 +24,13 @@ out different things without the cycle of modifiying, compiling, and running the
 Getting quick feedback for a snippet of code is one of the reasons why Python has been so popular.
 One of the most useful things about Python&rsquo;s REPL is the introspection
 capabilities. This allows developers to easily and dynamically explore libraries.
-In the Java world there are a number of options as well to do this.
-For most Java developers their IDEs also provide features like code completion, on the fly code analysis,
-and quick access to help documentation. However most Python developers are not familiar with Java IDEs.
-Also, they may need to learn Java for a project and it would be useful to be able to work with a Java
-like syntax in a REPL environment. This is where a Java developer would point his brethren Python developer
-to Groovy. Groovy has some great features such as being a dynamic language like Python and
+In the Java world there are a number of options to do this.
+Java developers rely on their IDEs to provide features like code completion, on the fly code analysis,
+and quick access to help documentation. However most Python developers are not familiar with the
+various Java IDEs and would need to take some time to learn how to use their features.
+Also, they may need to learn the Java language itself for a project. It would be useful to be able
+to work with a Java like syntax in a REPL environment. This is where a Java developer would
+point his brethren Python developer to Groovy. Groovy is a dynamic language like Python and has
 seamless integration to existing Java classes and libraires. Jclouds has become the defacto library
 for multicloud infrastructures for Java developers. (The Python equivalent being libcloud
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>) So if there is a project with Java
