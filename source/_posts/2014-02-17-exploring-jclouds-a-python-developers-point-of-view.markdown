@@ -130,7 +130,7 @@ template = compute_service.templateBuilder().locationId(ZONE).osDescriptionMatch
 Here the constant ZONE was defined by the static import of
 org.jclouds.examples.rackspace.cloudblockstorage.Constants.*
 however any string defining a valid zone (i.e. "IAD", "ORD", "DFW", "SYD") would work.
-Next let's create the cloud server. Because createNodesInGroup blocks till
+Next let's create the cloud server. Because the method createNodesInGroup blocks till
 the cloud server is created, let's put the method call createNodesInGroup
 in its own thread so that we don't have to wait for it to finish. 
 
