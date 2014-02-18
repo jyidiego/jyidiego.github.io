@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T22:00:42+00:00</updated>
+  <updated>2014-02-18T22:15:16+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -36,9 +36,9 @@ for multicloud infrastructures for Java developers. (The Python equivalent being
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>)
 This blog will focus on exploring jclouds using Groovy.
 To make the setup easy, I&rsquo;ll specify a very opinionated setup
-running Ubuntu 12.04 with OpenJDK 7 patch 51. The code samples was created using a Ubuntu 12.04
+running Ubuntu 12.04 with OpenJDK 7 patch 51. The code samples were created using the Ubuntu 12.04
 image from Rackspace &ndash; [Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM) (28b21a55-b686-4e8e-be9b-b6df2aaf60b8)]
-however the precise64 virtualbox from Vagrant should as well. Finally
+however the precise64 virtualbox from Vagrant should work as well. Finally
 your environment should have access to the internet. So let&rsquo;s set this up:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -79,18 +79,13 @@ already give us a lot of scaffolding code we can easily start exploring without 
 first clone the jclouds-example repo from github.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/jclouds/jclouds-examples.git </span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/jclouds/jclouds-examples.git 
+</span><span class='line'>cd jclouds-examples/rackspace</span></code></pre></td></tr></table></div></figure>
 
 
-<p>So let&rsquo;s explore something that isn&rsquo;t to trival, creating a cloud server and
-then adding some block storage to it.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd jclouds-examples/rackspace</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next we&rsquo;ll need to pull down all our dependent librarires. One way to think of this in terms of Python
-is as a pip install pointed to a requirements.txt file.</p>
+<p>Next we&rsquo;ll need to pull down all our dependent librarires. Maven is to a Java developer
+what pip is to a Python developer.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>mvn dependency:copy-dependencies "-DoutputDirectory=./lib"</span></code></pre></td></tr></table></div></figure>
@@ -103,7 +98,9 @@ files from the source.</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>javac -classpath "lib/*:src/main/java/:src/main/resources/" src/main/java/org/jclouds/examples/rackspace/*.java</span></code></pre></td></tr></table></div></figure>
 
 
-<p>So let&rsquo;s start exploring one of the examples, CreateVolumeAndAttach.java. So all we have to do at this point
+<p>So let&rsquo;s explore something that isn&rsquo;t to trival, creating a cloud server and
+then adding some block storage to it.
+So let&rsquo;s start exploring one of the examples, CreateVolumeAndAttach.java. So all we have to do at this point
 is fire up groovy&rsquo;s REPL with the appropriate classpath set and import this package.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -121,16 +118,18 @@ is fire up groovy&rsquo;s REPL with the appropriate classpath set and import thi
 
 
 <p>It helps to be looking
-at the source here so point your browser to <a href="https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java">https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java</a>
-Also, you&rsquo;ll need to grab your username and api_key. Instructions on how to do that are here:
+at the source here so point your browser to <a href="https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java">https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java</a></p>
+
+<p>Also, you&rsquo;ll need to grab your username and api_key. Instructions on how to do that are here:
 <a href="http://jclouds.apache.org/documentation/quickstart/rackspace/">http://jclouds.apache.org/documentation/quickstart/rackspace/</a></p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>cvs = new CreateVolumeAndAttach("groovy","beaf5678fffeeedddccc")</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Because we&rsquo;ve imported CreateVolumeAndAttach we can access the computeService handle. We&rsquo;ll use a convenient
-handle.</p>
+<p>Because we&rsquo;ve created an instance of the class CreateVolumeAndAttach, we
+can should be able to access the computeService handle. We&rsquo;ll assign a convenient
+alias to it. (A little snake_case for the Pythonista in me.)</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>compute_service = cvs.computeService</span></code></pre></td></tr></table></div></figure>
@@ -140,9 +139,9 @@ handle.</p>
 are jclouds way of abstracting the cloud instance configurations to make
 it more portable to use with other clouds. Some common elements that clouds share are things like
 Images, Hardware, and Location. To make allowances for different options for booting images
-jclouds allows define Options within the same Template object. Here on the Rackspace cloud
+jclouds also defines Options within the same Template object. Here on the Rackspace cloud
 we&rsquo;ll use performance1-1 for our flavor and the image that matches the regex &ldquo;.<em>CentOS 6.4.</em>&rdquo;
-So let&rsquo;s try this out. We&rsquo;ll need to import some of the packages to bring them into our namespace.</p>
+So let&rsquo;s try this out. We&rsquo;ll need to import some packages to bring them into our namespace.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -158,8 +157,8 @@ So let&rsquo;s try this out. We&rsquo;ll need to import some of the packages to 
 org.jclouds.examples.rackspace.cloudblockstorage.Constants.*
 however any string defining a valid zone (i.e. &ldquo;IAD&rdquo;, &ldquo;ORD&rdquo;, &ldquo;DFW&rdquo;, &ldquo;SYD&rdquo;) would work.
 Next let&rsquo;s create the cloud server. Because createNodesInGroup blocks till
-the cloud server is created, let&rsquo;s put createNodesInGroup in its own thread so that we don&rsquo;t
-have to wait for it to finish.</p>
+the cloud server is created, let&rsquo;s put the method call createNodesInGroup
+in its own thread so that we don&rsquo;t have to wait for it to finish.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -303,7 +302,7 @@ commands that will create a filesystem and mount the volume.</p>
 </span><span class='line'>, exitStatus=0}</span></code></pre></td></tr></table></div></figure>
 
 
-<p>There you go. So again the purpose of our use of Groovy here is to learn jclouds in the context of a
+<p>So there you go. Again the purpose using Groovy here is to learn jclouds with the context of a
 Java like syntax. You can of course explore jclouds with Jython and JRuby but hopefully this will
 give the Python/Ruby developer yet another option when exploring and hacking for profit.</p>
 ]]></content>
