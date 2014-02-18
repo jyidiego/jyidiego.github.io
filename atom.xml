@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T04:43:56+00:00</updated>
+  <updated>2014-02-18T04:48:10+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -35,7 +35,7 @@ for multicloud infrastructures for Java developers. (The Python equivalent being
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>)
 This blog will focus on exploring jclouds using Groovy.
 To make the setup easy, I&rsquo;ll specify a very opinionated setup
-running Ubuntu 12.04 with OpenJDK 7 patch 51. The posts code sample was created using a Ubuntu 12.04
+running Ubuntu 12.04 with OpenJDK 7 patch 51. The code samples was created using a Ubuntu 12.04
 image from Rackspace &ndash; [Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM) (28b21a55-b686-4e8e-be9b-b6df2aaf60b8)]
 however the precise64 virtualbox from Vagrant should as well. Finally
 your environment should have access to the internet. So let&rsquo;s set this up:</p>
