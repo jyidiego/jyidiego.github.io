@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T17:20:06+00:00</updated>
+  <updated>2014-02-18T22:00:42+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -120,32 +120,38 @@ is fire up groovy&rsquo;s REPL with the appropriate classpath set and import thi
 </span><span class='line'>===&gt; [import org.jclouds.examples.rackspace.cloudblockstorage.CreateVolumeAndAttach]</span></code></pre></td></tr></table></div></figure>
 
 
-<p>So at this point being able to walk through the source code will allow better visibility.
-It helps to also be looking
+<p>It helps to be looking
 at the source here so point your browser to <a href="https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java">https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java</a>
 Also, you&rsquo;ll need to grab your username and api_key. Instructions on how to do that are here:
 <a href="http://jclouds.apache.org/documentation/quickstart/rackspace/">http://jclouds.apache.org/documentation/quickstart/rackspace/</a></p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; cvs = new CreateVolumeAndAttach("groovy","beaf5678fffeeedddccc")</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cvs = new CreateVolumeAndAttach("groovy","beaf5678fffeeedddccc")</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Because we&rsquo;ve imported CreateVolumeAndAttach we can access the computeService handle. We&rsquo;ll use a convenient
 handle.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; compute_service = cvs.computeService</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>compute_service = cvs.computeService</span></code></pre></td></tr></table></div></figure>
 
 
-<p>So let&rsquo;s go ahead and create our cloud server. We&rsquo;ll create the template first. To do this we&rsquo;ll need
-to import some of the packages from CreateVolumeAndAttach.java to bring them into our namespace.</p>
+<p>So let&rsquo;s go ahead and create our first cloud server. We&rsquo;ll create the Template object first. Templates
+are jclouds way of abstracting the cloud instance configurations to make
+it more portable to use with other clouds. Some common elements that clouds share are things like
+Images, Hardware, and Location. To make allowances for different options for booting images
+jclouds allows define Options within the same Template object. Here on the Rackspace cloud
+we&rsquo;ll use performance1-1 for our flavor and the image that matches the regex &ldquo;.<em>CentOS 6.4.</em>&rdquo;
+So let&rsquo;s try this out. We&rsquo;ll need to import some of the packages to bring them into our namespace.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; import static org.jclouds.examples.rackspace.cloudblockstorage.Constants.*;
-</span><span class='line'>groovy:000&gt; import org.jclouds.openstack.nova.v2_0.domain.zonescoped.ZoneAndId;
-</span><span class='line'>groovy:000&gt; template = compute_service.templateBuilder().locationId(ZONE).osDescriptionMatches(".*CentOS 6.4.*").hardwareId(zoneAndId.slashEncode()).build();</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.jclouds.examples.rackspace.cloudblockstorage.Constants.*;
+</span><span class='line'>import org.jclouds.openstack.nova.v2_0.domain.zonescoped.ZoneAndId;
+</span><span class='line'>zoneAndId = ZoneAndId.fromZoneAndId(ZONE, "performance1-1");
+</span><span class='line'>template = compute_service.templateBuilder().locationId(ZONE).osDescriptionMatches(".*CentOS 6.4.*").hardwareId(zoneAndId.slashEncode()).build();</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Here the constant ZONE was defined by the static import of
@@ -159,17 +165,147 @@ have to wait for it to finish.</p>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>node_create = Thread.start {
+</span><span class='line'>nodes = compute_service.createNodesInGroup("groovy-demo", 1, template);
+</span><span class='line'>nodeMetadata = nodes.iterator().next();
+</span><span class='line'>publicAddress = nodeMetadata.getPublicAddresses().iterator().next(); }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While our server is being created (1 &ndash; 2 minutes) we can work on creating our block storage.
+As usual we&rsquo;ll need to import a few things.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
+</span><span class='line'>import com.google.common.collect.ImmutableMap;
+</span><span class='line'>options = CreateVolumeOptions.Builder.name("groovy-volume").metadata(ImmutableMap.&lt;String, String&gt; of("key1", "value1"));
+</span><span class='line'>volume = cvs.volumeApi.create(100, options);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next let&rsquo;s join our thread node_create to our current context to make sure it is finished. This command
+will block till node_create completes.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>node_create.join()</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So the method compute_service.createNodesInGroup actually returns
+a list. For example if we had called it with compute_service.createNodesInGroup(&lsquo;groovy-demo&rsquo;, 5, template) we&rsquo;d
+be creating five servers based of the template. However because we are creating it with just one server
+I&rsquo;ll just reference the first item in the list thus it will be nodes[0].getProviderId() in the argument
+for attaching the volume. So let&rsquo;s attach the volume.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>volumeAttachment = cvs.volumeAttachmentApi.attachVolumeToServerAsDevice(volume.getId(), nodes[0].getProviderId(), DEVICE);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point you should be able to see the volume attached to the server in the cloud control panel.
+First we&rsquo;ll create a groovy password generator from stackoverflow.com
+(<a href="http://stackoverflow.com/questions/8138164/groovy-generate-random-string-from-given-character-set">http://stackoverflow.com/questions/8138164/groovy-generate-random-string-from-given-character-set</a>)
+Then we&rsquo;ll change the admin password to the secret password that we just generated.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; def node_create = Thread.start {
-</span><span class='line'>groovy:001&gt; nodes = compute_service.createNodesInGroup("groovy-demo", 1, template)
-</span><span class='line'>groovy:002&gt; nodeMetadata = nodes.iterator().next();
-</span><span class='line'>groovy:003&gt; publicAddress = nodeMetadata.getPublicAddresses().iterator().next();
-</span><span class='line'>groovy:004&gt; }</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>generator = { String alphabet, int n -&gt;
+</span><span class='line'>  new Random().with {
+</span><span class='line'>    (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>set verbosity QUIET
+</span><span class='line'>secret_password = generator( (('a'..'z')+('A'..'Z')+('0'..'9')).join(), 12);
+</span><span class='line'>set verbosity INFO
+</span><span class='line'>cvs.nova.getApi().getServerApiForZone(ZONE).changeAdminPass(nodeMetadata.getProviderId(), secret_password);</span></code></pre></td></tr></table></div></figure>
 
 
-<p>While our server is being created (1 &ndash; 2 minutes) we can work on creating our block storage.</p>
+<p>Now it&rsquo;s time to build the script and run the
+commands that will create a filesystem and mount the volume.</p>
 
-<p>&#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import org.jclouds.scriptbuilder.ScriptBuilder;
+</span><span class='line'>import static org.jclouds.scriptbuilder.domain.Statements.exec;
+</span><span class='line'>import org.jclouds.scriptbuilder.domain.OsFamily;
+</span><span class='line'>import org.jclouds.compute.options.RunScriptOptions;
+</span><span class='line'>script = new ScriptBuilder()
+</span><span class='line'>script.addStatement(exec("mkfs -t ext4 /dev/xvdd"))
+</span><span class='line'>script.addStatement(exec("mount /dev/xvdd /mnt"))
+</span><span class='line'>script.render(OsFamily.Unix)
+</span><span class='line'>options = RunScriptOptions.Builder.blockOnComplete(true).overrideLoginPassword(secret_password)
+</span><span class='line'>response = compute_service.runScriptOnNode(nodes[0].getId(), script, options);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once the command completes you should get a status that looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>===&gt; {output=Filesystem label=
+</span><span class='line'>OS type: Linux
+</span><span class='line'>Block size=4096 (log=2)
+</span><span class='line'>Fragment size=4096 (log=2)
+</span><span class='line'>Stride=0 blocks, Stripe width=0 blocks
+</span><span class='line'>6553600 inodes, 26214400 blocks
+</span><span class='line'>1310720 blocks (5.00%) reserved for the super user
+</span><span class='line'>First data block=0
+</span><span class='line'>Maximum filesystem blocks=4294967296
+</span><span class='line'>800 block groups
+</span><span class='line'>32768 blocks per group, 32768 fragments per group
+</span><span class='line'>8192 inodes per group
+</span><span class='line'>Superblock backups stored on blocks: 
+</span><span class='line'>  32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+</span><span class='line'>  4096000, 7962624, 11239424, 20480000, 23887872
+</span><span class='line'>
+</span><span class='line'>Writing inode tables: done                            
+</span><span class='line'>Creating journal (32768 blocks): done
+</span><span class='line'>Writing superblocks and filesystem accounting information: done
+</span><span class='line'>
+</span><span class='line'>This filesystem will be automatically checked every 29 mounts or
+</span><span class='line'>180 days, whichever comes first.  Use tune2fs -c or -i to override.
+</span><span class='line'>, error=mke2fs 1.41.12 (17-May-2010)
+</span><span class='line'>, exitStatus=0}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There you go. So again the purpose of our use of Groovy here is to learn jclouds in the context of a
+Java like syntax. You can of course explore jclouds with Jython and JRuby but hopefully this will
+give the Python/Ruby developer yet another option when exploring and hacking for profit.</p>
 ]]></content>
   </entry>
   
