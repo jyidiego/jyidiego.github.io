@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T22:15:16+00:00</updated>
+  <updated>2014-02-18T22:17:19+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -32,7 +32,7 @@ They also may need to learn the Java language itself for a project. This is wher
 Groovy is a dynamic language like Python but has Java like language syntax. It also has
 seamless integration to existing Java classes and libraries making it easy to use with existing Java code.
 Jclouds has become the defacto library
-for multicloud infrastructures for Java developers. (The Python equivalent being libcloud
+of multicloud infrastructures for Java developers. (The Python equivalent being libcloud
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>)
 This blog will focus on exploring jclouds using Groovy.
 To make the setup easy, I&rsquo;ll specify a very opinionated setup
