@@ -99,7 +99,8 @@ Getting quick feedback for a snippet of code is one of the reasons why Python ha
 One of the most useful things about Python&rsquo;s REPL is the introspection
 capabilities. This allows developers to easily and dynamically explore libraries.
 In the Java world there are a number of options to do this.
-Java developers rely on their IDEs to provide features like code completion, on the fly code analysis,
+Java developers rely on their Integrated Development Environments (IDEs) to provide features
+like code completion, on the fly code analysis,
 and quick access to help documentation. However most Python developers are not familiar with the
 various Java IDEs and would need to take some time to learn how to use their features.
 Also, they may need to learn the Java language itself for a project. It would be useful to be able
@@ -110,13 +111,47 @@ for multicloud infrastructures for Java developers. (The Python equivalent being
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>) So if there is a project with Java
 developers and multiple clouds chances are knowing jclouds will be useful. This blog will
 focus on exploring jclouds using Groovy. So with that in mind let&rsquo;s get our environment setup. First
-we&rsquo;ll need to setup our Java environment:</p>
+we&rsquo;ll need to setup our Java environment. Since we&rsquo;re exploring we probably don&rsquo;t want to spend to
+much time setting up our environment. So to make this easier I&rsquo;ll specify a very opinionated setup
+running Ubuntu 12.04 with OpenJDK 7 patch 51. The posts code sample was created using a Ubuntu 12.04
+image from Rackspace &ndash; [Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM) (28b21a55-b686-4e8e-be9b-b6df2aaf60b8)]
+however the precise64 virtualbox from Vagrant should also as well. Finally it goes without saying
+your environment should have access to the internet to install the necessary packages and utilities.
+That should make copying and pasting the code below just work:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>test code</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
+</span><span class='line'>apt-get -y install openjdk-7-jdk zip unzip maven2</span></code></pre></td></tr></table></div></figure>
 
 
 <p></p>
+
+<p>Groovy has a environment manager called gvm that is similiar in concept to the Ruby environment manager
+rvm. I&rsquo;ve found this to be quite useful:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export JAVA_HOME=/etc/alternatives/java
+</span><span class='line'>curl -s get.gvmtool.net | bash</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point gvm should be installed but you&rsquo;ll either have to source the gvm-init.sh or
+restart the shell as specifed by the message upon gvm installation.
+For most folks sourcing gvm-init.sh is easier.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source "$HOME/.gvm/bin/gvm-init.sh"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You&rsquo;ll now want to install the latest version of Groovy. At the time of this post the latest version is 2.2.1,
+however you can run the command below to install the latest version:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gvm install groovy</span></code></pre></td></tr></table></div></figure>
+
+
+
 </div>
 
 
