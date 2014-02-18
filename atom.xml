@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T14:04:21+00:00</updated>
+  <updated>2014-02-18T17:20:06+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -44,7 +44,7 @@ your environment should have access to the internet. So let&rsquo;s set this up:
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>apt-get update
-</span><span class='line'>apt-get -y install openjdk-7-jdk zip unzip maven2</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>apt-get -y install openjdk-7-jdk zip unzip maven</span></code></pre></td></tr></table></div></figure>
 
 
 <p></p>
@@ -73,7 +73,103 @@ however you can run the command below to install the latest version:</p>
 </pre></td><td class='code'><pre><code class=''><span class='line'>gvm install groovy</span></code></pre></td></tr></table></div></figure>
 
 
+<p>Great, so now groovy is installed and we&rsquo;ll want to start diving into the jclouds code.
+The easiest thing to start exploring is the jclouds-examples repo. Because the examples
+already give us a lot of scaffolding code we can easily start exploring without to much typing. So let&rsquo;s
+first clone the jclouds-example repo from github.</p>
 
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone https://github.com/jclouds/jclouds-examples.git </span></code></pre></td></tr></table></div></figure>
+
+
+<p>So let&rsquo;s explore something that isn&rsquo;t to trival, creating a cloud server and
+then adding some block storage to it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd jclouds-examples/rackspace</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we&rsquo;ll need to pull down all our dependent librarires. One way to think of this in terms of Python
+is as a pip install pointed to a requirements.txt file.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mvn dependency:copy-dependencies "-DoutputDirectory=./lib"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Also because we&rsquo;ll be using the jclouds-examples/rackspace we should go ahead and create class
+files from the source.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>javac -classpath "lib/*:src/main/java/:src/main/resources/" src/main/java/org/jclouds/examples/rackspace/*.java</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So let&rsquo;s start exploring one of the examples, CreateVolumeAndAttach.java. So all we have to do at this point
+is fire up groovy&rsquo;s REPL with the appropriate classpath set and import this package.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groovysh -cp "lib/*:src/main/java/:src/main/resources/"
+</span><span class='line'>Groovy Shell (2.2.1, JVM: 1.7.0_51)
+</span><span class='line'>Type 'help' or '\h' for help.
+</span><span class='line'>---------------------------------------------------------------------------------------------------------------------------
+</span><span class='line'>groovy:000&gt; import org.jclouds.examples.rackspace.cloudblockstorage.CreateVolumeAndAttach
+</span><span class='line'>===&gt; [import org.jclouds.examples.rackspace.cloudblockstorage.CreateVolumeAndAttach]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So at this point being able to walk through the source code will allow better visibility.
+It helps to also be looking
+at the source here so point your browser to <a href="https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java">https://github.com/jclouds/jclouds-examples/blob/master/rackspace/src/main/java/org/jclouds/examples/rackspace/cloudblockstorage/CreateVolumeAndAttach.java</a>
+Also, you&rsquo;ll need to grab your username and api_key. Instructions on how to do that are here:
+<a href="http://jclouds.apache.org/documentation/quickstart/rackspace/">http://jclouds.apache.org/documentation/quickstart/rackspace/</a></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; cvs = new CreateVolumeAndAttach("groovy","beaf5678fffeeedddccc")</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Because we&rsquo;ve imported CreateVolumeAndAttach we can access the computeService handle. We&rsquo;ll use a convenient
+handle.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; compute_service = cvs.computeService</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So let&rsquo;s go ahead and create our cloud server. We&rsquo;ll create the template first. To do this we&rsquo;ll need
+to import some of the packages from CreateVolumeAndAttach.java to bring them into our namespace.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; import static org.jclouds.examples.rackspace.cloudblockstorage.Constants.*;
+</span><span class='line'>groovy:000&gt; import org.jclouds.openstack.nova.v2_0.domain.zonescoped.ZoneAndId;
+</span><span class='line'>groovy:000&gt; template = compute_service.templateBuilder().locationId(ZONE).osDescriptionMatches(".*CentOS 6.4.*").hardwareId(zoneAndId.slashEncode()).build();</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here the constant ZONE was defined by the static import of
+org.jclouds.examples.rackspace.cloudblockstorage.Constants.*
+however any string defining a valid zone (i.e. &ldquo;IAD&rdquo;, &ldquo;ORD&rdquo;, &ldquo;DFW&rdquo;, &ldquo;SYD&rdquo;) would work.
+Next let&rsquo;s create the cloud server. Because createNodesInGroup blocks till
+the cloud server is created, let&rsquo;s put createNodesInGroup in its own thread so that we don&rsquo;t
+have to wait for it to finish.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groovy:000&gt; def node_create = Thread.start {
+</span><span class='line'>groovy:001&gt; nodes = compute_service.createNodesInGroup("groovy-demo", 1, template)
+</span><span class='line'>groovy:002&gt; nodeMetadata = nodes.iterator().next();
+</span><span class='line'>groovy:003&gt; publicAddress = nodeMetadata.getPublicAddresses().iterator().next();
+</span><span class='line'>groovy:004&gt; }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>While our server is being created (1 &ndash; 2 minutes) we can work on creating our block storage.</p>
+
+<p>&#8220;`</p>
 ]]></content>
   </entry>
   
