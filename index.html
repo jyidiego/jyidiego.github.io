@@ -233,7 +233,7 @@ So let&rsquo;s try this out. We&rsquo;ll need to import some packages to bring t
 <p>Here the constant ZONE was defined by the static import of
 org.jclouds.examples.rackspace.cloudblockstorage.Constants.*
 however any string defining a valid zone (i.e. &ldquo;IAD&rdquo;, &ldquo;ORD&rdquo;, &ldquo;DFW&rdquo;, &ldquo;SYD&rdquo;) would work.
-Next let&rsquo;s create the cloud server. Because createNodesInGroup blocks till
+Next let&rsquo;s create the cloud server. Because the method createNodesInGroup blocks till
 the cloud server is created, let&rsquo;s put the method call createNodesInGroup
 in its own thread so that we don&rsquo;t have to wait for it to finish.</p>
 
