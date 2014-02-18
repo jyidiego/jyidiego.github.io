@@ -95,29 +95,24 @@ to run their code and get quick &hellip;">
 <div class="entry-content"><p>One of the most powerful features of Python is the REPL (Run, Evaluate, Print, and Loop) This allows developers
 to run their code and get quick feedback. Developers are able test out new ideas and try
 out different things without the cycle of modifiying, compiling, and running the source code.
-Getting quick feedback for a snippet of code is one of the reasons why Python has been so popular.
 One of the most useful things about Python&rsquo;s REPL is the introspection
 capabilities. This allows developers to easily and dynamically explore libraries.
 In the Java world there are a number of options to do this.
 Java developers rely on their Integrated Development Environments (IDEs) to provide features
-like code completion, on the fly code analysis,
+like object introspection, code completion, on the fly code analysis,
 and quick access to help documentation. However most Python developers are not familiar with the
-various Java IDEs and would need to take some time to learn how to use their features.
-Also, they may need to learn the Java language itself for a project. It would be useful to be able
-to work with a Java like syntax in a REPL environment. This is where a Java developer would
-point his brethren Python developer to Groovy. Groovy is a dynamic language like Python and has
+various Java IDEs and would need time to learn how to use their features.
+They also may need to learn the Java language itself for a project. This is where Groovy makes a lot of sense.
+Groovy is a dynamic language like Python and has
 seamless integration to existing Java classes and libraires. Jclouds has become the defacto library
 for multicloud infrastructures for Java developers. (The Python equivalent being libcloud
-<a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>) So if there is a project with Java
-developers and multiple clouds chances are knowing jclouds will be useful. This blog will
-focus on exploring jclouds using Groovy. So with that in mind let&rsquo;s get our environment setup. First
-we&rsquo;ll need to setup our Java environment. Since we&rsquo;re exploring we probably don&rsquo;t want to spend to
-much time setting up our environment. So to make this easier I&rsquo;ll specify a very opinionated setup
+<a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>)
+This blog will focus on exploring jclouds using Groovy.
+To make the setup easy, I&rsquo;ll specify a very opinionated setup
 running Ubuntu 12.04 with OpenJDK 7 patch 51. The posts code sample was created using a Ubuntu 12.04
 image from Rackspace &ndash; [Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM) (28b21a55-b686-4e8e-be9b-b6df2aaf60b8)]
-however the precise64 virtualbox from Vagrant should also as well. Finally it goes without saying
-your environment should have access to the internet to install the necessary packages and utilities.
-That should make copying and pasting the code below just work:</p>
+however the precise64 virtualbox from Vagrant should as well. Finally
+your environment should have access to the internet. So let&rsquo;s set this up:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
