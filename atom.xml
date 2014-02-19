@@ -4,7 +4,7 @@
   <title><![CDATA[Cloud APIs]]></title>
   <link href="http://jyidiego.github.io/atom.xml" rel="self"/>
   <link href="http://jyidiego.github.io/"/>
-  <updated>2014-02-18T22:41:37+00:00</updated>
+  <updated>2014-02-19T17:13:38+00:00</updated>
   <id>http://jyidiego.github.io/</id>
   <author>
     <name><![CDATA[John Yi]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Exploring Jclouds With Groovy: A Python Developers Point of View]]></title>
+    <title type="html"><![CDATA[Exploring Apache Jclouds With Groovy: A Python Developers Point of View]]></title>
     <link href="http://jyidiego.github.io/blog/2014/02/17/exploring-jclouds-a-python-developers-point-of-view/"/>
     <updated>2014-02-17T15:49:25+00:00</updated>
     <id>http://jyidiego.github.io/blog/2014/02/17/exploring-jclouds-a-python-developers-point-of-view</id>
@@ -31,7 +31,7 @@ various Java IDEs and would need time to learn how to use their features.
 They also may need to learn the Java language itself for a project. This is where Groovy makes a lot of sense.
 Groovy is a dynamic language like Python but has a Java like language syntax. It also has
 seamless integration to existing Java classes and libraries making it easy to use with existing Java code.
-Jclouds has become the defacto library
+Apache jclouds has become the defacto library
 of multicloud infrastructures for Java developers. (The Python equivalent being libcloud
 <a href="https://libcloud.readthedocs.org/en/latest/">https://libcloud.readthedocs.org/en/latest/</a>)
 This blog will focus on exploring jclouds using Groovy.
@@ -84,7 +84,7 @@ first clone the jclouds-example repo from github.</p>
 </span><span class='line'>cd jclouds-examples/rackspace</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Next we&rsquo;ll need to pull down all our dependent librarires. Maven is to a Java developer
+<p>Next we&rsquo;ll need to pull down all our dependent libraries. Maven is to a Java developer
 what pip is to a Python developer.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
